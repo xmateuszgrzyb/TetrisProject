@@ -1,5 +1,6 @@
 package com.example.tetrisproject;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.graphics.Color;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import tyrantgit.explosionfield.ExplosionField;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity
     private ImageButton downButton;
     private ImageButton leftButton;
 
+    public ExplosionField explosionField;
     private TextView pointTextView;
     private TextView highscoreLevelTextView;
     private TextView currentLevelTextView;
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        explosionField = ExplosionField.attach2Window(this);
         mediaPlayer = new MediaPlayer();    //ustawienie mediaplayera pod sciezke dzwiekowa
         try
         {
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         tetris = new GameEngine(this,nextPieceWindow, gameBoard);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(480, 900);
         tetris.setLayoutParams(params);
-        RelativeLayout relativeTetris = (RelativeLayout) findViewById(R.id.relativelayout);
+        final RelativeLayout relativeTetris = (RelativeLayout) findViewById(R.id.relativelayout);
         tetris.setBackgroundColor(Color.LTGRAY);
         relativeTetris.addView(tetris);
 
@@ -119,7 +123,16 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                tetris.resetGame();
+                explosionField.explode(relativeTetris);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        tetris.resetGame();
+                    }
+                }, 1000);
             }
         });
 

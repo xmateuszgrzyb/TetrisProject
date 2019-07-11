@@ -28,7 +28,6 @@ public class GameOver extends AppCompatActivity implements View.OnTouchListener
         layout.setOnTouchListener(this);
         layout.addView(gameOverView);
         reachedLevel = (TextView) findViewById(R.id.reachedLevel);
-        //reachedLevel.setText("Your Level: " + getIntent().getIntExtra(GameEngine.REACHED_LEVEL,0));
     }
 
     //po dotknieciu na ekran konca gry wracamy do aktywnosci z rozgrywka
@@ -62,7 +61,8 @@ public class GameOver extends AppCompatActivity implements View.OnTouchListener
             p.setTextSize(200);
             canvas.drawText("Game Over",50,400,p);
             p.setTextSize(75);
-            canvas.drawText("Touch!!!",450,800,p);
+            canvas.drawText("Touch!!!",420,800,p);
+            canvas.drawText("Your Level: " + getIntent().getIntExtra(GameEngine.REACHED_LEVEL,0),350,1200,p);
         }
     }
 }
